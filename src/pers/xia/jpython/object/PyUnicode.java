@@ -6,7 +6,7 @@ import pers.xia.jpython.object.PyExceptions.ErrorType;
 
 public class PyUnicode extends PyObject
 {
-    String str;
+    public String str;
 
     public PyUnicode(byte[] b, String encode)
     {
@@ -74,4 +74,8 @@ public class PyUnicode extends PyObject
 
     }
 
+    @Override
+    public String toString() {
+        return str;
+    }
 }

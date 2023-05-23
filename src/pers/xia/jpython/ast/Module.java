@@ -3,6 +3,7 @@ package pers.xia.jpython.ast;
 import pers.xia.jpython.object.PyObject;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class Module extends modType {
     public java.util.List<stmtType> body;
@@ -23,6 +24,10 @@ public class Module extends modType {
     }
 
     public void traverse(VisitorIF visitor) throws Exception {
+    }
+
+    public List<stmtType> getBody(){
+        return body;
     }
 
 }

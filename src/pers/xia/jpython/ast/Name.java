@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Name extends exprType {
+
     public String id;
     public expr_contextType ctx;
 
@@ -25,6 +26,9 @@ public class Name extends exprType {
 
     public Object accept(VisitorIF visitor) throws Exception {
         return visitor.visitName(this);
+    }
+    public String getId() {
+        return id;
     }
 
     public void traverse(VisitorIF visitor) throws Exception {

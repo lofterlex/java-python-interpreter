@@ -826,34 +826,34 @@ public class Ast
         return new argType(name, annotation, n.lineNo, n.colOffset);
     }
 
-    private operatorType getOperator(Node n)
+    private OperatorType getOperator(Node n)
     {
         switch (n.dfaType)
         {
         case VBAR:
-            return operatorType.BitOr;
+            return OperatorType.BitOr;
         case CIRCUMFLEX:
-            return operatorType.BitXor;
+            return OperatorType.BitXor;
         case AMPER:
-            return operatorType.BitAnd;
+            return OperatorType.BitAnd;
         case LEFTSHIFT:
-            return operatorType.LShift;
+            return OperatorType.LShift;
         case RIGHTSHIFT:
-            return operatorType.RShift;
+            return OperatorType.RShift;
         case PLUS:
-            return operatorType.Add;
+            return OperatorType.Add;
         case MINUS:
-            return operatorType.Sub;
+            return OperatorType.Sub;
         case STAR:
-            return operatorType.Mult;
+            return OperatorType.Mult;
         case AT:
-            return operatorType.MatMult;
+            return OperatorType.MatMult;
         case SLASH:
-            return operatorType.Div;
+            return OperatorType.Div;
         case DOUBLESLASH:
-            return operatorType.FloorDiv;
+            return OperatorType.FloorDiv;
         case PERCENT:
-            return operatorType.Mod;
+            return OperatorType.Mod;
         default:
             throw new PyExceptions(ErrorType.AST_ERROR, "invlid operator", n);
         }
@@ -1352,7 +1352,7 @@ public class Ast
         exprType expr2;
         exprType result;
 
-        operatorType newoperator;
+        OperatorType newoperator;
 
         expr1 = astForExpr(n.getChild(0));
         expr2 = astForExpr(n.getChild(2));
@@ -1464,38 +1464,38 @@ public class Ast
         return astForItercomp(n, COMP.COMP_GENEXP);
     }
 
-    private operatorType astForAugassign(Node n)
+    private OperatorType astForAugassign(Node n)
     {
         REQ(n, DFAType.augassign);
         n = n.getChild(0);
         switch (n.str)
         {
         case "+=":
-            return operatorType.Add;
+            return OperatorType.Add;
         case "-=":
-            return operatorType.Sub;
+            return OperatorType.Sub;
         case "/=":
-            return operatorType.Div;
+            return OperatorType.Div;
         case "//=":
-            return operatorType.FloorDiv;
+            return OperatorType.FloorDiv;
         case "%=":
-            return operatorType.Mod;
+            return OperatorType.Mod;
         case "<<=":
-            return operatorType.LShift;
+            return OperatorType.LShift;
         case ">>=":
-            return operatorType.RShift;
+            return OperatorType.RShift;
         case "&=":
-            return operatorType.BitAnd;
+            return OperatorType.BitAnd;
         case "^=":
-            return operatorType.BitXor;
+            return OperatorType.BitXor;
         case "|=":
-            return operatorType.BitOr;
+            return OperatorType.BitOr;
         case "*=":
-            return operatorType.Mult;
+            return OperatorType.Mult;
         case "**=":
-            return operatorType.Pow;
+            return OperatorType.Pow;
         case "@=":
-            return operatorType.Mult;
+            return OperatorType.Mult;
         default:
             throw new PyExceptions(ErrorType.AST_ERROR,
                     "invalid augassign: " + n.str, n);
@@ -2077,7 +2077,7 @@ public class Ast
         if(n.getChild(-1).dfaType == DFAType.factor)
         {
             exprType f = astForExpr(n.getChild(-1));
-            e = new BinOp(e, operatorType.Pow, f, n.lineNo, n.colOffset);
+            e = new BinOp(e, OperatorType.Pow, f, n.lineNo, n.colOffset);
         }
         return e;
     }
@@ -2105,7 +2105,7 @@ public class Ast
         else if(n.getChild(1).dfaType == DFAType.augassign)
         {
             exprType expr1, expr2;
-            operatorType newOperator;
+            OperatorType newOperator;
             Node ch = n.getChild(0);
 
             expr1 = astForTestlist(ch);

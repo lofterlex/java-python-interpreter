@@ -76,6 +76,9 @@ public class PyExceptions extends RuntimeException
         super(msg);
         map.push(msg);
     }
+    public void addException(String msg){
+        map.push(msg);
+    }
 
     public String toString()
     {
