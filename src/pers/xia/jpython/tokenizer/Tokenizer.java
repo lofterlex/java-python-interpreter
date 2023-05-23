@@ -27,7 +27,7 @@ public class Tokenizer
 
     public static void main(String[] args)
     {
-        File file = new File("./test/test.py");
+        File file = new File("./source/test.py");
         try
         {
             Tokenizer tokenizer = new Tokenizer(file);

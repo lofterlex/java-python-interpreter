@@ -1049,7 +1049,8 @@ public class Symtable
         
                     Ast ast = new Ast();
                     modType mod = ast.fromNode(node);
-                    Symtable.buildObject(mod, null);
+                    Symtable st = Symtable.buildObject(mod, null);
+
                 }
                 catch (PyExceptions e)
                 {
