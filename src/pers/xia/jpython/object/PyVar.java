@@ -10,4 +10,9 @@ public class PyVar extends PyObject{
     public String getVarName() {
         return varName;
     }
+
+    @Override
+    public String toString(){
+        return varName;
+    }
 }

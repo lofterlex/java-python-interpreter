@@ -78,4 +78,13 @@ public class PyUnicode extends PyObject
     public String toString() {
         return str;
     }
+
+    public int compare(PyUnicode str){
+        return 0 - this.str.compareTo(str.str);
+    }
+
+    @Override
+    public boolean asBoolean() {
+        return !this.str.equals("");
+    }
 }

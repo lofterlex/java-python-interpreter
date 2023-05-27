@@ -17,4 +17,8 @@ public abstract class PyObject
         }
         return new PyNone();
     }
+
+    public boolean asBoolean(){
+        return true;
+    }
 }

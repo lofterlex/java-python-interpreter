@@ -3,6 +3,7 @@ package pers.xia.jpython.compiler;
 import java.io.File;
 
 import pers.xia.jpython.ast.*;
+import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.grammar.GramInit;
 import pers.xia.jpython.object.Py;
 import pers.xia.jpython.object.PyDict;
@@ -811,10 +812,8 @@ public class Symtable
     	{
     	    Compare c = (Compare)e;
     	    this.visitExpr(c.left);
-    	    for(exprType expr : c.comparators)
-    	    {
-    	        this.visitExpr(expr);
-    	    }
+//
+            this.visitExpr(c.right);
     	}
     	else if(e instanceof Call)
     	{

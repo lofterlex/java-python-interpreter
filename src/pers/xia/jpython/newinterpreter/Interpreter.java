@@ -1,11 +1,12 @@
-package pers.xia.jpython.interpreter;
+package pers.xia.jpython.newinterpreter;
 
-import pers.xia.jpython.ast.*;
 import pers.xia.jpython.ast.Module;
-import pers.xia.jpython.compiler.Symtable;
+import pers.xia.jpython.ast.*;
 import pers.xia.jpython.grammar.GramInit;
-import pers.xia.jpython.interpreter.expression.Expression;
-import pers.xia.jpython.interpreter.statement.*;
+import pers.xia.jpython.newinterpreter.expression.EvaluateVisitor;
+import pers.xia.jpython.newinterpreter.expression.ExpVisitor;
+import pers.xia.jpython.newinterpreter.expression.Expression;
+import pers.xia.jpython.newinterpreter.statement.*;
 import pers.xia.jpython.object.PyExceptions;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
@@ -14,7 +15,6 @@ import pers.xia.jpython.parser.ParseToken;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class Interpreter {
     private final List<Statement> statements = new ArrayList<>();
@@ -37,8 +37,9 @@ public class Interpreter {
     }
     /** running the program */
     public void runProgram() {
+        ExpVisitor visitor = new EvaluateVisitor();
         for (Statement statement: statements) {
-            statement.run(programState);
+            statement.run(programState, visitor);
         }
     }
 
@@ -49,16 +50,33 @@ public class Interpreter {
             exprType target = ((Assign) node).targets.get(0);
             variableName = parser.getNameVal((Name) target);
             exprType value = ((Assign) node).value;
-            Expression<?> expression = parser.parseExpression(value);
+            Expression expression = parser.parseExpression(value);
             return new AssignStatement(variableName,expression);
         }
         if (node instanceof For){
+
         }
         if (node instanceof If){
+            If ifNode = (If) node;
+            Expression test = parser.parseExpression(ifNode.test);
+            List<Statement> body = new ArrayList<>();
+            for(stmtType stmt: ifNode.body){
+                body.add(this.parseAstNode(stmt));
+            }
+            return new IfStatement(test,body);
+        }
+        if(node instanceof While){
+            While whileNode = (While) node;
+            Expression test = parser.parseExpression(whileNode.test);
+            List<Statement> body = new ArrayList<>();
+            for(stmtType stmt: whileNode.body){
+                body.add(this.parseAstNode(stmt));
+            }
+            return new WhileStatement(test,body);
         }
         if (node instanceof Expr){
             exprType target = ((Expr) node).value;
-            Expression<?> expression = parser.parseExpression(target);
+            Expression expression = parser.parseExpression(target);
             return new ExprStatement(expression);
         }
         return  new EmpytStatement();
