@@ -18,6 +18,11 @@ public class Tokenizer
         this.tok = new Token(file);
     }
 
+    public Tokenizer(byte[] data){
+        this();
+        this.tok = new Token(new String(data));
+    }
+
     public Token nextToken()
     {
         this.tok.get();

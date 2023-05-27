@@ -12,7 +12,7 @@ public class PyFloat extends PyObject
     }
 
     public PyFloat(String s){
-        this.num = Double.valueOf(s);
+        this.num = Double.parseDouble(s);
     }
     public double asFloat(){
         return  num;
