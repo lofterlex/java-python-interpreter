@@ -1,5 +1,6 @@
 package pers.xia.jpython.object;
 
+import pers.xia.jpython.interpreter.Interpreter;
 import pers.xia.jpython.interpreter.expression.DoubleConstantExpression;
 
 public class PyFloat extends PyObject
@@ -12,7 +13,7 @@ public class PyFloat extends PyObject
     }
 
     public PyFloat(String s){
-
+        this.num = Double.parseDouble(s);
     }
     public double asFloat(){
         return  num;

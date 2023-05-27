@@ -17,6 +17,7 @@ import java.util.Queue;
 
 public class Interpreter {
     private final List<Statement> statements = new ArrayList<>();
+//    所有的interpreter 共用一个programstate，这样就可以保存之前的内容。
     public static ProgramState programState = new ProgramState();
     /** initialize the print function */
     static {

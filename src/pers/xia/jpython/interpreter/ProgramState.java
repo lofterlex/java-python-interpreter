@@ -12,9 +12,13 @@ import java.util.Map;
 import java.util.Stack;
 
 public class ProgramState {
+    //变量表
     protected final HashMap<String, PyObject> variableHeap;
+    //方法状态栈，每次查变量的时候，会先看外部有没有var，再看栈里有没有
     private Stack<FunctionState> functionStateStack;
+    //方法名---对应一个list<> 参数列表
     protected final Map<String, List<String>> stringList;
+    //方法名--对应一个statement列表 表示方法要执行的statement
     protected final Map<String, List<Statement>> statementList;
     protected final PyExceptions pyExceptions;
 

@@ -12,6 +12,41 @@ import pers.xia.jpython.tokenizer.Tokenizer;
 
 public class ParseToken
 {
+    public static Node parseBytes(byte[] data,Grammar grammar,int start){
+        try {
+            Parser parser = new Parser(grammar,start);
+            Tokenizer tokenizer = new Tokenizer(data);
+            Token tok = tokenizer.nextToken();
+            int colOffset = 1;
+            int lineNo = 1;
+            while (parser.addToken(tok, colOffset) != ReturnCode.ACCEPT)
+            {
+
+                tok = tokenizer.nextToken();
+                if(tok.state != TokState.NEWLINE && tok.state != TokState.INDENT
+                        && tok.state != TokState.DEDENT)
+                {
+                    if(tok.lineNo != lineNo)
+                    {
+                        colOffset = 1;
+                        lineNo = tok.lineNo;
+                    }
+                    else
+                    {
+                        colOffset++;
+                    }
+                }
+            }
+            return parser.tree;
+        }
+        catch (PyExceptions e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public static Node parseFile(File file, Grammar grammar, int start)
     {
 
