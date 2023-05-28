@@ -1,6 +1,7 @@
 package pers.xia.jpython.object;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 
 import pers.xia.jpython.object.PyExceptions.ErrorType;
 
@@ -86,5 +87,26 @@ public class PyUnicode extends PyObject
     @Override
     public boolean asBoolean() {
         return !this.str.equals("");
+    }
+
+    @Override
+    public PyObject add(PyObject p) {
+        return new PyUnicode( (this.str + p.toString()).getBytes(), "utf-8");
+    }
+
+    @Override
+    public PyObject mul(PyObject p) {
+        if(p instanceof PyLong){
+            return new PyString(String.join("", Collections.nCopies((int) ((PyLong) p).asLong(), this.str)));
+        }
+        else{
+            super.mul(p);
+            return new PyNone();
+        }
+    }
+
+    @Override
+    public String getType(){
+        return "str";
     }
 }

@@ -6,5 +6,4 @@ public interface ExpVisitor {
     Object constantVisit(ProgramState programState, Expression expression);
     Object varVisit(ProgramState programState, Expression expression);
     Object functionVisit(ProgramState programState, FunctionCallExpression expression);
-    Object arithmeticVisit(ProgramState programState, AddExpression expression);
 }

@@ -15,7 +15,7 @@ public class Parser {
     public Statement createAssignStatement(String variableName, exprType expression){
         return new AssignStatement(variableName,parseExpression(expression));
     }
-    public Expression createFunctionCallExpression(String functionName, List<PyObject> parameterValues) {
+    public Expression createFunctionCallExpression(String functionName, List<Expression> parameterValues) {
         return new FunctionCallExpression(functionName, parameterValues);
     }
 
@@ -24,14 +24,7 @@ public class Parser {
             BinOp b = (BinOp) expression;
             Expression left = parseExpression(b.left);
             Expression right = parseExpression(b.right);
-            switch (b.op){
-                case Add:
-                    return new AddExpression(left,right);
-                case Mult:
-                    return new MultiplyExpression(left, right);
-                default:
-                    return new ConstantExpression(new PyString("暂未实现"));
-            }
+            return new BinOpExpression(left,right,b.op);
         }
         if(expression instanceof Compare){
             Compare compare = (Compare) expression;
@@ -40,12 +33,16 @@ public class Parser {
             switch (compare.ops){
                 case Gt:
                     return new GTConditionExpression(left,right);
+                case LtE:
+                    return new GTEConditionExpression(right,left);
                 case Lt:
-                    return new LTConditionExpression(left,right);
+                    return new GTConditionExpression(right,left);
+                case GtE:
+                    return new GTEConditionExpression(left,right);
                 case Eq:
-                    return new EqualExpression(left,right);
+                    return new EqualExpression(left,right,true);
                 case NotEq:
-                    return new NotEqualExpression(left,right);
+                    return new EqualExpression(left,right, false);
                 default:
                     return new ConstantExpression(new PyBoolean(true));
             }
@@ -69,19 +66,9 @@ public class Parser {
         }
         if(expression instanceof Call){
             String functionName = getNameVal((Name) ((Call) expression).func);
-            List<PyObject> pyObjectList = new ArrayList<>();
+            List<Expression> pyObjectList = new ArrayList<>();
             for (exprType arg : ((Call) expression).args) {
-                if(arg instanceof Name){
-                    pyObjectList.add(new PyVar(((Name) arg).getId()));
-                }
-                if(arg instanceof Str){
-                    Str s = (Str) arg;
-                    pyObjectList.add(s.s);
-                }
-                if(arg instanceof Num){
-                    Num n = (Num) arg;
-                    return new ConstantExpression(n.n);
-                }
+                pyObjectList.add(parseExpression(arg));
             }
             return createFunctionCallExpression(functionName,pyObjectList);
         }
@@ -89,7 +76,10 @@ public class Parser {
             Name n = (Name) expression;
             return new VariableExpression(new PyVar(n.id));
         }
-
+        if(expression instanceof NameConstant){
+            NameConstant n = (NameConstant) expression;
+            return new ConstantExpression(n.value);
+        }
         return new ConstantExpression(new PyLong(123));
     }
 

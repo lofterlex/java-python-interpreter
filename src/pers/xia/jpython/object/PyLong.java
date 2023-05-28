@@ -1,5 +1,7 @@
 package pers.xia.jpython.object;
 
+import java.util.Collections;
+
 public class PyLong extends PyObject
 {
     private long num;
@@ -47,27 +49,84 @@ public class PyLong extends PyObject
         return num;
     }
 
+
     @Override
     public String toString() {
         return String.valueOf(num);
     }
 
-    public double compare(PyObject object){
-        try{
-            if(object instanceof PyLong){
-                return this.num - ((PyLong) object).asLong();
-            }else if(object instanceof PyFloat){
-                return this.num - ((PyFloat) object).asFloat();
-            }
-        }catch (Exception e){
-            System.out.println("not support ");
-            return -1;
+    @Override
+    public boolean equals(PyObject p) {
+        if(p instanceof PyLong || p instanceof PyFloat || p instanceof PyBoolean){
+            return !this.sub(p).asBoolean();
         }
-        return -1;
+        return false;
     }
 
     @Override
     public boolean asBoolean() {
         return this.num != 0;
+    }
+
+    @Override
+    public PyObject add(PyObject p) {
+        if (p instanceof PyLong){
+            return new PyLong(this.num + ((PyLong) p).asLong());
+        }
+        if (p instanceof PyFloat){
+            return new PyFloat(this.num + ((PyFloat) p).asFloat());
+        }
+        if (p instanceof PyUnicode){
+            return new PyUnicode( (this.toString() + p.toString()).getBytes(), "utf-8");
+        }
+        if(p instanceof PyBoolean){
+            return new PyLong(this.num + ((PyBoolean) p).asInt());
+        }
+        else{
+            super.add(p);
+            return new PyNone();
+        }
+    }
+
+    @Override
+    public PyObject sub(PyObject p) {
+        if (p instanceof PyLong){
+            return new PyLong(this.num - ((PyLong) p).asLong());
+        }
+        if (p instanceof PyFloat){
+            return new PyFloat(this.num - ((PyFloat) p).asFloat());
+        }
+        if(p instanceof PyBoolean){
+            return new PyLong(this.num - ((PyBoolean) p).asInt());
+        }
+        else{
+            super.sub(p);
+            return new PyNone();
+        }
+    }
+
+    @Override
+    public PyObject mul(PyObject p) {
+        if (p instanceof PyLong){
+            return new PyLong(this.num * ((PyLong) p).asLong());
+        }
+        if (p instanceof PyFloat){
+            return new PyFloat(this.num * ((PyFloat) p).asFloat());
+        }
+        if(p instanceof PyBoolean){
+            return new PyLong(this.num * ((PyBoolean) p).asInt());
+        }
+        if(p instanceof PyUnicode){
+            return new PyString(String.join("", Collections.nCopies((int) this.num, p.toString())));
+        }
+        else{
+            super.mul(p);
+            return new PyNone();
+        }
+    }
+
+    @Override
+    public String getType(){
+        return "num";
     }
 }

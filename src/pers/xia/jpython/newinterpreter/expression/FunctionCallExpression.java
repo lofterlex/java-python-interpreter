@@ -11,9 +11,9 @@ import java.util.Stack;
 
 public class FunctionCallExpression extends Expression {
     protected String functionName;
-    protected List<PyObject> parameterValue;
+    protected List<Expression> parameterValue;
 
-    public FunctionCallExpression(String functionName, List<PyObject> parameterValue){
+    public FunctionCallExpression(String functionName, List<Expression> parameterValue){
         this.functionName = functionName;
         this.parameterValue = parameterValue;
     }

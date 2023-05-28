@@ -3,11 +3,14 @@ package pers.xia.jpython.newinterpreter;
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.ast.*;
 import pers.xia.jpython.grammar.GramInit;
+import pers.xia.jpython.newinterpreter.expression.ConstantExpression;
 import pers.xia.jpython.newinterpreter.expression.EvaluateVisitor;
 import pers.xia.jpython.newinterpreter.expression.ExpVisitor;
 import pers.xia.jpython.newinterpreter.expression.Expression;
 import pers.xia.jpython.newinterpreter.statement.*;
 import pers.xia.jpython.object.PyExceptions;
+import pers.xia.jpython.object.PyLong;
+import pers.xia.jpython.object.PyString;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
 import pers.xia.jpython.parser.ParseToken;
@@ -54,7 +57,22 @@ public class Interpreter {
             return new AssignStatement(variableName,expression);
         }
         if (node instanceof For){
-
+            For forNode = (For) node;
+            if(!(forNode.target instanceof Name) || !(forNode.iter instanceof Call)){
+                return new EmpytStatement();
+            }
+            String variableName = ((Name) forNode.target).getId();
+            Call range = (Call) forNode.iter;
+            if(!(range.func instanceof Name)  || !((Name) range.func).getId().equals("range")){
+                return new EmpytStatement();
+            }
+            Expression start = range.args.size() > 1 ? parser.parseExpression(range.args.get(0)) : new ConstantExpression(new PyLong(0));
+            Expression end = range.args.size() > 1 ? parser.parseExpression(range.args.get(1)) : parser.parseExpression(range.args.get(0));
+            List<Statement> body = new ArrayList<>();
+            for(stmtType statement: forNode.body ){
+                body.add(parseAstNode(statement));
+            }
+            return new ForStatement(variableName,start,end,body);
         }
         if (node instanceof If){
             If ifNode = (If) node;

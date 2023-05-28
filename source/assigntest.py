@@ -1,9 +1,10 @@
 # test assign
-i=0
-while i<10 and 1:
+n = 4
+for i in range(n,10):
     print(i)
-    i=i+1
-print(1)
+print(1 + 1.5)
+print(True + 2)
+print('123'+8)
 print("hello")
 print('hello')
 # test binop

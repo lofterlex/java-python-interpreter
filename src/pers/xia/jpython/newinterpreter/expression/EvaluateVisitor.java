@@ -32,7 +32,8 @@ public class EvaluateVisitor implements ExpVisitor{
 
         //2.2 遍历 parameterValue 获取入参数值。
         for (int i = 0; i < expression.parameterValue.size(); i++) {
-            PyObject val = expression.parameterValue.get(i);
+            Expression param = expression.parameterValue.get(i);
+            PyObject val = (PyObject) param.accept(programState,this);
             if(val instanceof PyVar){
                 val = programState.getVariable(((PyVar) val).getVarName());
             }
@@ -48,8 +49,4 @@ public class EvaluateVisitor implements ExpVisitor{
         return FunctionStateStack.pop().getReturnValue();
     }
 
-    @Override
-    public Object arithmeticVisit(ProgramState programState, AddExpression expression) {
-        return null;
-    }
 }
