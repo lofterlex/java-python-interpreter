@@ -23,15 +23,15 @@ public abstract class PyObject
     }
 
     public PyObject add(PyObject p){
-        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "unsupported operand type(s) for : " + this.getType()+" and "+p.getType());
+        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "TypeError: unsupported operand type(s) for " + this.getType()+" and "+p.getType());
     }
 
     public PyObject sub(PyObject p){
-        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "unsupported operand type(s) for : " + this.getType()+" and "+p.getType());
+        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "TypeError: unsupported operand type(s) for " + this.getType()+" and "+p.getType());
     }
 
     public PyObject mul(PyObject p){
-        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "unsupported operand type(s) for : " + this.getType()+" and "+p.getType());
+        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "TypeError: unsupported operand type(s) for " + this.getType()+" and "+p.getType());
     }
 
     public boolean equals(PyObject p){

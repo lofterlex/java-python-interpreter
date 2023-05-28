@@ -97,6 +97,20 @@ public class Interpreter {
             Expression expression = parser.parseExpression(target);
             return new ExprStatement(expression);
         }
+        if(node instanceof FunctionDef){
+            FunctionDef funNode = (FunctionDef) node;
+            List<String> parameterNames = new ArrayList<>();
+            if(funNode.args.args!=null){
+                for(argType arg: funNode.args.args){
+                    parameterNames.add(arg.arg);
+                }
+            }
+            List<Statement> statements= new ArrayList<>();
+            for(stmtType stmt:funNode.body){
+                statements.add(parseAstNode(stmt));
+            }
+            return new DefineFunctionStatement(funNode.name,parameterNames,statements);
+        }
         return  new EmpytStatement();
     }
 

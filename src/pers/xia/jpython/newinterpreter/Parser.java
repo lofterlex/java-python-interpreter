@@ -67,8 +67,10 @@ public class Parser {
         if(expression instanceof Call){
             String functionName = getNameVal((Name) ((Call) expression).func);
             List<Expression> pyObjectList = new ArrayList<>();
-            for (exprType arg : ((Call) expression).args) {
-                pyObjectList.add(parseExpression(arg));
+            if(((Call) expression).args != null) {
+                for (exprType arg : ((Call) expression).args) {
+                    pyObjectList.add(parseExpression(arg));
+                }
             }
             return createFunctionCallExpression(functionName,pyObjectList);
         }
