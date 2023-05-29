@@ -13,7 +13,7 @@ public class ExprStatement implements Statement{
     @Override
     public void run(ProgramState programState) {
         if(expression.evaluate(programState)!=null){
-            System.out.print(expression.evaluate(programState));
+            System.out.println(expression.evaluate(programState));
         }
     }
 }

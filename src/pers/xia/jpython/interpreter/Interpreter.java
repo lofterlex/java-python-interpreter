@@ -1,6 +1,7 @@
 package pers.xia.jpython.interpreter;
 
 import pers.xia.jpython.ast.*;
+import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.compiler.Symtable;
 import pers.xia.jpython.grammar.GramInit;
 import pers.xia.jpython.interpreter.expression.Expression;

@@ -3,6 +3,7 @@ package pers.xia.jpython.parser;
 import java.util.ArrayList;
 
 import pers.xia.jpython.ast.*;
+import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.grammar.DFAType;
 import pers.xia.jpython.object.Py;
 import pers.xia.jpython.object.PyBytes;
@@ -2798,21 +2799,9 @@ public class Ast
                 }
                 else
                 {
-                    exprType expression;
-                    java.util.List<cmpopType> ops = new ArrayList<cmpopType>(
-                            n.nChild() / 2);
-                    java.util.List<exprType> cmps = new ArrayList<exprType>(
-                            n.nChild() / 2);
-
-                    for (int i = 1; i < n.nChild(); i += 2)
-                    {
-                        cmpopType newOperator = astForCompOp(n.getChild(i));
-                        expression = astForExpr(n.getChild(i + 1));
-                        ops.add(newOperator);
-                        cmps.add(expression);
-                    }
-
-                    expression = astForExpr(n.getChild(0));
+                    exprType expression = astForExpr(n.getChild(0));
+                    cmpopType ops = astForCompOp(n.getChild(1));
+                    exprType cmps = astForExpr(n.getChild(2));
                     return new Compare(expression, ops, cmps, n.lineNo,
                             n.colOffset);
                 }

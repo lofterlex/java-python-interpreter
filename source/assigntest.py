@@ -1,7 +1,10 @@
 # test assign
-x = 1
-print(x)
-print(1)
+n = 4
+for i in range(n,10):
+    print(i)
+print(1 + 1.5)
+print(True + 2)
+print('123'+8)
 print("hello")
 print('hello')
 # test binop

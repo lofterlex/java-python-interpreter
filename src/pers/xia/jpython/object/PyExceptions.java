@@ -15,7 +15,8 @@ public class PyExceptions extends RuntimeException
         PARSER_ERROR, 
         SYSTEM_ERROR, 
         SYMTABLE_ERROR,
-        SYNTAX_ERROR
+        SYNTAX_ERROR,
+        TYPE_ERROR,
     }
 
     public Stack<String> map = new Stack<String>();
