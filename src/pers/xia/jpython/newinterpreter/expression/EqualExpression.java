@@ -21,7 +21,7 @@ public class EqualExpression extends OpExpression{
         if(lhs instanceof PyUnicode && rhs instanceof PyUnicode){
             res = ((PyUnicode) lhs).compare((PyUnicode) rhs) != 0;
         }else{
-            res = !((PyObject)lhs).equals((PyObject)rhs);
+            res = ((PyObject)lhs).equals((PyObject)rhs);
         }
         return new PyBoolean(equal ? res : !res);
     }

@@ -7,8 +7,6 @@ import pers.xia.jpython.newinterpreter.expression.Expression;
 import java.util.List;
 
 public class IfStatement extends BlockStatement {
-    private Expression expression;
-    private List<Statement> body;
 
     public IfStatement(Expression expression, List<Statement> body) {
         super(expression, body);
