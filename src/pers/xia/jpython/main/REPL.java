@@ -124,13 +124,15 @@ public class REPL {
                 }else if(isComment(c)){         //comment case
                     String appendStr = ignoreComment(line);
                     sb.append(appendStr);
-                }else if(isString(c)){          //string case
-                    String appendStr = getFormatString(line);
-                    sb.append(appendStr);
-                }else if(isFloat(c)){           //float case
-                    String appendStr = getFormatDouble(line);
-                    sb.append(appendStr);
-                }else {
+                }
+//                else if(isString(c)){          //string case
+//                    String appendStr = getFormatString(line);
+//                    sb.append(appendStr);
+//                }else if(isFloat(c)){           //float case
+//                    String appendStr = getFormatDouble(line);
+//                    sb.append(appendStr);
+//                }
+                else {
                     sb.append(readChar());
                 }
             }

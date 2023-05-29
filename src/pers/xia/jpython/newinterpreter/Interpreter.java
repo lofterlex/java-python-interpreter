@@ -16,6 +16,7 @@ import pers.xia.jpython.parser.Node;
 import pers.xia.jpython.parser.ParseToken;
 
 import java.io.File;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +111,11 @@ public class Interpreter {
                 statements.add(parseAstNode(stmt));
             }
             return new DefineFunctionStatement(funNode.name,parameterNames,statements);
+        }
+        if (node instanceof Return){
+            Return returnNode = (Return) node;
+            Expression expression = parser.parseExpression(returnNode.value);
+            return new ReturnStatement(expression);
         }
         return  new EmpytStatement();
     }
