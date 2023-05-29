@@ -28,7 +28,7 @@ public class FunctionState extends ProgramState {
         //return setReturnValue(); //was not able to figure it out
         return returnVal;
     }
-    public void setReturnValue(int returnValue) {
+    public void setReturnValue(Object returnValue) {
         this.returnVal =returnValue;
     }
     public PyObject getVariable(String variable) {

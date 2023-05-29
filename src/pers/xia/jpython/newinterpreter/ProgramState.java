@@ -57,6 +57,12 @@ public class ProgramState {
     public void updateException(String err){
         pyExceptions.addException(err);
     }
+    public FunctionState getTopFunctionState(){
+        if(!functionStateStack.isEmpty()){
+            return functionStateStack.peek();
+        }
+        return null;
+    }
 
     public Stack<FunctionState> getFunctionStateStack() {
         return functionStateStack;
