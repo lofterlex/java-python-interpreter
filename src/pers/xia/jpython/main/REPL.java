@@ -2,7 +2,7 @@ package pers.xia.jpython.main;
 
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.grammar.GramInit;
-import pers.xia.jpython.interpreter.Interpreter;
+import pers.xia.jpython.newinterpreter.Interpreter;
 import pers.xia.jpython.object.Py;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
@@ -64,18 +64,19 @@ public class REPL {
         PyReadMod mod = new PyReadMod(line);
         StringBuilder st = new StringBuilder();
         while (!mod.isEnd()){
-            st.append(mod.format()+"\n");
+            st.append(mod.format()).append("\n");
             System.out.print("...");
             line = readInput();
             mod = new PyReadMod(line);
         }
         String formatStr = mod.format();
-        st.append(formatStr+"\n");
+        st.append(formatStr).append("\n");
         byte[] bytes = st.toString().getBytes();
         Node node = ParseToken.parseBytes(bytes, GramInit.grammar, 1);
         Ast ast = new Ast();
         // get the modType
         Module module = (Module) ast.fromNode(node);
+//        Interpreter interpreter = new Interpreter(module.getBody());
         Interpreter interpreter = new Interpreter(module.getBody());
         interpreter.runProgram();
     }
@@ -107,9 +108,8 @@ public class REPL {
             mp.put('{','}');mp.put('(',')');mp.put('[',']');
             mp.put(':','\n');
         }
-        static Stack<Character> set = new Stack<>();
         private String line;
-        Stack<Character> st = new Stack<>();
+        static Stack<Character> st = new Stack<>();
         public PyReadMod(String line) {
             this.line = line;
         }
@@ -185,6 +185,10 @@ public class REPL {
         }
         private boolean isEnd(){
             char[] chars = line.toCharArray();
+            while (chars.length==0&&!st.isEmpty()){
+                if(st.peek()==':')st.pop();
+                else break;
+            }
             for (char aChar : chars) {
                 if(mp.containsKey(aChar)){
                     st.push(aChar);
