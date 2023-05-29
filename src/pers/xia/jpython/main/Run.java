@@ -5,7 +5,6 @@ import java.io.File;
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.ast.modType;
 import pers.xia.jpython.ast.stmtType;
-import pers.xia.jpython.compiler.Symtable;
 import pers.xia.jpython.grammar.GramInit;
 import pers.xia.jpython.object.PyExceptions;
 import pers.xia.jpython.parser.Ast;
@@ -34,8 +33,6 @@ public class Run
             for (stmtType stmtType : mod.body) {
                 System.out.println(stmtType.toString());
             }
-            Symtable symtable = Symtable.buildObject(mod, null);
-            System.out.println(symtable);
         }
         catch (PyExceptions e)
         {

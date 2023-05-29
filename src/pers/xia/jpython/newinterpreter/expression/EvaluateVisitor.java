@@ -43,7 +43,7 @@ public class EvaluateVisitor implements ExpVisitor{
         FunctionStateStack.push(functionState);
         for (Statement functionStatement : functionStatements) {
             //2.3在returnExpression 中更新 返回值
-            functionStatement.run(functionState, this);
+            functionStatement.run(programState, this);
         }
         //3. 按顺序出栈FuncStack，获取返回值。
         return FunctionStateStack.pop().getReturnValue();
