@@ -126,6 +126,11 @@ public class PyLong extends PyObject
     }
 
     @Override
+    public PyObject uSub() {
+        return new PyLong(-this.num);
+    }
+
+    @Override
     public String getType(){
         return "num";
     }

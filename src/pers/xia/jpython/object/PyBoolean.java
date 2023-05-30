@@ -59,6 +59,11 @@ public class PyBoolean extends PyObject
         return super.sub(p);
     }
 
+    @Override
+    public PyObject uSub() {
+        return new PyLong(-this.asInt());
+    }
+
 
     @Override
     public String getType(){

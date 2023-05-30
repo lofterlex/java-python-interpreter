@@ -82,6 +82,10 @@ public class Parser {
             NameConstant n = (NameConstant) expression;
             return new ConstantExpression(n.value);
         }
+        if(expression instanceof UnaryOp){
+            UnaryOp unaryOp = (UnaryOp) expression;
+            return new UnaryExpression(parseExpression(unaryOp.operand),unaryOp.op);
+        }
         return new ConstantExpression(new PyLong(123));
     }
 
