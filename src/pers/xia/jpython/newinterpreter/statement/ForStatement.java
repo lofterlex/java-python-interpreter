@@ -8,7 +8,6 @@ import pers.xia.jpython.object.PyObject;
 import java.util.List;
 
 public class ForStatement extends BlockStatement {
-    private List<Statement> body;
     private String loopVariable;
     private Expression rangeStart;
     private Expression rangeEnd;
@@ -24,8 +23,12 @@ public class ForStatement extends BlockStatement {
     public void run(ProgramState programState, ExpVisitor v) {
         programState.setVariable(loopVariable, (PyObject) rangeStart.accept(programState, v));
         for(long i = ((PyLong)programState.getVariable(loopVariable)).asLong(); i < ((PyLong)rangeEnd.accept(programState, v)).asLong(); i++) {
-            forBlock(programState, v);
+            boolean ifBreak = forBlock(programState, v);
+            if(ifBreak){
+                return;
+            }
             programState.setVariable(loopVariable, new PyLong(i+1));
         }
+        elseBlock(programState, v);
     }
 }

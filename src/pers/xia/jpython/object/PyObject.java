@@ -1,6 +1,5 @@
 package pers.xia.jpython.object;
 
-import pers.xia.jpython.interpreter.expression.DoubleConstantExpression;
 
 public abstract class PyObject
 {

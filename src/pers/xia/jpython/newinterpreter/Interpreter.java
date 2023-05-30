@@ -70,8 +70,14 @@ public class Interpreter {
             Expression start = range.args.size() > 1 ? parser.parseExpression(range.args.get(0)) : new ConstantExpression(new PyLong(0));
             Expression end = range.args.size() > 1 ? parser.parseExpression(range.args.get(1)) : parser.parseExpression(range.args.get(0));
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType statement: forNode.body ){
                 body.add(parseAstNode(statement));
+            }
+            if(forNode.orelse != null) {
+                for(stmtType stmt: forNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
             }
             return new ForStatement(variableName,start,end,body);
         }
@@ -79,17 +85,29 @@ public class Interpreter {
             If ifNode = (If) node;
             Expression test = parser.parseExpression(ifNode.test);
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType stmt: ifNode.body){
                 body.add(this.parseAstNode(stmt));
             }
-            return new IfStatement(test,body);
+            if(ifNode.orelse != null) {
+                for(stmtType stmt: ifNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
+            }
+            return new IfStatement(test,body,elseBody);
         }
         if(node instanceof While){
             While whileNode = (While) node;
             Expression test = parser.parseExpression(whileNode.test);
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType stmt: whileNode.body){
                 body.add(this.parseAstNode(stmt));
+            }
+            if(whileNode.orelse != null) {
+                for(stmtType stmt: whileNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
             }
             return new WhileStatement(test,body);
         }
@@ -116,6 +134,12 @@ public class Interpreter {
             Return returnNode = (Return) node;
             Expression expression = parser.parseExpression(returnNode.value);
             return new ReturnStatement(expression);
+        }
+        if (node instanceof Continue){
+            return new ContinueStatement();
+        }
+        if (node instanceof Break){
+            return new BreakStatement();
         }
         return  new EmpytStatement();
     }
