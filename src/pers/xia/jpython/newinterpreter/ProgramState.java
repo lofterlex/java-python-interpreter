@@ -11,7 +11,7 @@ import java.util.Stack;
 
 public class ProgramState {
     protected final HashMap<String, PyObject> variableHeap;
-    private Stack<FunctionState> functionStateStack;
+    protected final Stack<FunctionState> functionStateStack;
     protected final Map<String, List<String>> stringList;
     protected final Map<String, List<Statement>> statementList;
     protected final PyExceptions pyExceptions;

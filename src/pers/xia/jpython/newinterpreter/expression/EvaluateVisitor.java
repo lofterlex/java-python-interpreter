@@ -44,6 +44,9 @@ public class EvaluateVisitor implements ExpVisitor{
         for (Statement functionStatement : functionStatements) {
             //2.3在returnExpression 中更新 返回值
             functionStatement.run(programState, this);
+            if(FunctionStateStack.peek().hasReturnValue()){
+                break;
+            }
         }
         //3. 按顺序出栈FuncStack，获取返回值。
         return FunctionStateStack.pop().getReturnValue();
