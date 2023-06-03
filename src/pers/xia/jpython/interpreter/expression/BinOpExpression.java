@@ -13,18 +13,18 @@ public class BinOpExpression extends OpExpression {
     }
 
     @Override
-    public Object eval(ProgramState programState) {
-        Object lhs = this.lhs.eval(programState);
-        Object rhs = this.rhs.eval(programState);
+    public PyObject eval(ProgramState programState) {
+        PyObject lhs = this.lhs.eval(programState);
+        PyObject rhs = this.rhs.eval(programState);
         switch (operatorType){
             case Add:
-                return ((PyObject) lhs).add((PyObject) rhs);
+                return lhs.add(rhs);
             case Sub:
-                return ((PyObject) lhs).sub((PyObject) rhs);
+                return lhs.sub(rhs);
             case Mult:
-                return ((PyObject) lhs).mul((PyObject) rhs);
+                return lhs.mul(rhs);
             default:
-                return new PyString("暂未实现");
+                return new PyUnicode("暂未实现".getBytes(),"utf-8");
 
         }
     }

@@ -19,7 +19,7 @@ public class FunctionCallExpression extends Expression {
     }
 
     @Override
-    public Object eval(ProgramState programState) {
+    public PyObject eval(ProgramState programState) {
         Stack<FunctionState> FunctionStateStack = programState.getFunctionStateStack();
         //1. FunctionObj 压入栈
         FunctionState functionState = new FunctionState();
@@ -30,7 +30,7 @@ public class FunctionCallExpression extends Expression {
         //2.2 遍历 parameterValue 获取入参数值。
         for (int i = 0; i < this.parameterValue.size(); i++) {
             Expression param = this.parameterValue.get(i);
-            PyObject val = (PyObject) param.eval(programState);
+            PyObject val =  param.eval(programState);
             if(val instanceof PyVar){
                 val = programState.getVariable(((PyVar) val).getVarName());
             }

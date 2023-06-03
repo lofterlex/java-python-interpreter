@@ -10,6 +10,9 @@ public class WhileStatement extends BlockStatement{
     public WhileStatement(Expression expression, List<Statement> body){
         super(expression, body);
     }
+    public WhileStatement(Expression expression, List<Statement> body, List<Statement> elseBody) {
+        super(expression, body, elseBody);
+    }
 
     @Override
     public void run(ProgramState programState) {

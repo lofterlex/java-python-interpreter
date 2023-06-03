@@ -14,8 +14,8 @@ public class UnaryExpression extends Expression{
     }
 
     @Override
-    public Object eval(ProgramState programState) {
-        PyObject res = (PyObject) operand.eval(programState);
+    public PyObject eval(ProgramState programState) {
+        PyObject res = operand.eval(programState);
         switch (type){
             case UAdd:
                 return res;

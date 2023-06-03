@@ -10,7 +10,7 @@ public class ConstantExpression extends Expression{
     }
 
     @Override
-    public Object eval(ProgramState programState) {
+    public PyObject eval(ProgramState programState) {
         return this.val;
     }
 }

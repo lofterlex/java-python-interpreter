@@ -12,7 +12,7 @@ public abstract class PyObject
             return new PyFloat((double) obj);
         }
         if(obj instanceof String){
-            return new PyString((String) obj);
+            return new PyUnicode( ((String) obj).getBytes(), "utf-8");
         }
         return new PyNone();
     }

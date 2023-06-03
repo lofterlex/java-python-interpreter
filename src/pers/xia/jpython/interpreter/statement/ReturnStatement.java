@@ -3,6 +3,7 @@ package pers.xia.jpython.interpreter.statement;
 import pers.xia.jpython.interpreter.FunctionState;
 import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.interpreter.expression.Expression;
+import pers.xia.jpython.object.PyObject;
 
 public class ReturnStatement implements Statement{
     Expression expression;
@@ -12,7 +13,7 @@ public class ReturnStatement implements Statement{
     }
     @Override
     public void run(ProgramState programState) {
-        Object expressionValue = expression.eval(programState);
+        PyObject expressionValue = expression.eval(programState);
         FunctionState topFunctionState = programState.getTopFunctionState();
         topFunctionState.setReturnValue(expressionValue);
     }

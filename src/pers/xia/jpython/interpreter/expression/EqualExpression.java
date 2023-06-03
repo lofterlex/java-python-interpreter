@@ -13,14 +13,14 @@ public class EqualExpression extends OpExpression{
     }
 
     @Override
-    public Object eval(ProgramState programState) {
-        Object lhs = this.lhs.eval(programState);
-        Object rhs = this.rhs.eval(programState);
+    public PyObject eval(ProgramState programState) {
+        PyObject lhs = this.lhs.eval(programState);
+        PyObject rhs = this.rhs.eval(programState);
         boolean res;
         if(lhs instanceof PyUnicode && rhs instanceof PyUnicode){
             res = ((PyUnicode) lhs).compare((PyUnicode) rhs) != 0;
         }else{
-            res = ((PyObject)lhs).equals((PyObject)rhs);
+            res = lhs.equals(rhs);
         }
         return new PyBoolean(equal ? res : !res);
     }

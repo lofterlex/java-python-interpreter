@@ -9,5 +9,5 @@ public abstract class Expression {
         this.val = val;
     }
     public Expression(){}
-    public abstract Object eval(ProgramState programState);
+    public abstract PyObject eval(ProgramState programState);
 }

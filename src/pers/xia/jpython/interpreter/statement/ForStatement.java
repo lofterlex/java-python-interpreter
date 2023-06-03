@@ -20,9 +20,9 @@ public class ForStatement extends BlockStatement {
 
     @Override
     public void run(ProgramState programState) {
-        programState.setVariable(loopVariable, (PyObject) rangeStart.eval(programState));
+        programState.setVariable(loopVariable, rangeStart.eval(programState));
         for(long i = ((PyLong)programState.getVariable(loopVariable)).asLong(); i < ((PyLong)rangeEnd.eval(programState)).asLong(); i++) {
-            boolean ifBreak = forBlock(programState);
+            boolean ifBreak = bodyBlock(programState);
             if(ifBreak){
                 return;
             }

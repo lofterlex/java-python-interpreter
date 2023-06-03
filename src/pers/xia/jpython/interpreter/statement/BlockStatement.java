@@ -2,11 +2,11 @@ package pers.xia.jpython.interpreter.statement;
 
 import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.interpreter.expression.Expression;
-import pers.xia.jpython.object.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// Todo: 修改BlockStatement实现不同步长
 public abstract class BlockStatement implements Statement{
     private Expression expression;
     private List<Statement> body;
@@ -26,25 +26,26 @@ public abstract class BlockStatement implements Statement{
     }
 
     public void ifBlock(ProgramState programState) {
-        boolean res = ((PyObject)expression.eval(programState)).asBoolean();
+        boolean res = (expression.eval(programState)).asBoolean();
         if(res){
-            forBlock(programState);
+            bodyBlock(programState);
         }else{
             elseBlock(programState);
         }
     }
 
     public void whileLoop(ProgramState programState) {
-        while(((PyBoolean)expression.eval(programState)).asBoolean()) {
-            if(forBlock(programState));
-            return;
+        // TODO: 完成whileLoop实现while循环
+        while((expression.eval(programState)).asBoolean()) {
+            if(bodyBlock(programState)){return;}
         }
         elseBlock(programState);
     }
 
-    // 返回值表示该block是否有需要向外传递的break
-    public boolean forBlock(ProgramState programState) {
+    // 返回值为true则表示该block有需要向外传递的break
+    public boolean bodyBlock(ProgramState programState) {
         for (Statement statement: body){
+            // body里面有break和continue的话，需要将当前if语句的breakFlag或continueFlag进行相应的修改
             if(statement instanceof BreakStatement){
                 if(this instanceof IfStatement){
                     ((IfStatement) this).breakFlag = true;
@@ -56,12 +57,12 @@ public abstract class BlockStatement implements Statement{
                 }
                 return false;
             }
-            //run之后 如果是ifStatement,breakFlag可能会发生改变，所以需要再判断一次
+            //run之后 如果是ifStatement,其flag可能会发生改变，所以需要判断是否跳出
             statement.run(programState);
             if (statement instanceof IfStatement){
                 if(((IfStatement) statement).breakFlag) return true;
                 if(((IfStatement) statement).continueFlag) {
-                    // 重置continueFlag 以免影响下次判断
+                    // 重置continueFlag 以免影响下次循环判断
                     ((IfStatement) statement).continueFlag = false;
                     return false;
                 };

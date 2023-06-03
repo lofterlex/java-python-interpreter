@@ -97,7 +97,7 @@ public class PyUnicode extends PyObject
     @Override
     public PyObject mul(PyObject p) {
         if(p instanceof PyLong){
-            return new PyString(String.join("", Collections.nCopies((int) ((PyLong) p).asLong(), this.str)));
+            return new PyUnicode(String.join("", Collections.nCopies((int) ((PyLong) p).asLong(), this.str)).getBytes(),"utf-8");
         }
         else{
             super.mul(p);

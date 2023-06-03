@@ -45,6 +45,7 @@ public class Interpreter {
     private Statement parseAstNode(stmtType node){
         Parser parser = new Parser();
         if(node instanceof Assign){
+            // Todo: 实现连续赋值 比如a=b=1
             String variableName;
             exprType target = ((Assign) node).targets.get(0);
             variableName = parser.getNameVal((Name) target);
@@ -64,6 +65,7 @@ public class Interpreter {
             }
             Expression start = range.args.size() > 1 ? parser.parseExpression(range.args.get(0)) : new ConstantExpression(new PyLong(0));
             Expression end = range.args.size() > 1 ? parser.parseExpression(range.args.get(1)) : parser.parseExpression(range.args.get(0));
+            //Todo：从range中提取第3个参数
             List<Statement> body = new ArrayList<>();
             List<Statement> elseBody = new ArrayList<>();
             for(stmtType statement: forNode.body ){
@@ -93,6 +95,7 @@ public class Interpreter {
         }
         if(node instanceof While){
             While whileNode = (While) node;
+            //Todo 实现对While的解析
             Expression test = parser.parseExpression(whileNode.test);
             List<Statement> body = new ArrayList<>();
             List<Statement> elseBody = new ArrayList<>();
@@ -104,7 +107,7 @@ public class Interpreter {
                     elseBody.add(this.parseAstNode(stmt));
                 }
             }
-            return new WhileStatement(test,body);
+            return new WhileStatement(test,body,elseBody);
         }
         if (node instanceof Expr){
             exprType target = ((Expr) node).value;
@@ -146,7 +149,6 @@ public class Interpreter {
         {
             Node node = ParseToken.parseFile(file, GramInit.grammar, 1);
             Ast ast = new Ast();
-            // get the modType
             Module mod = (Module) ast.fromNode(node);
             Interpreter interpreter = new Interpreter(mod.getBody());
             interpreter.runProgram();

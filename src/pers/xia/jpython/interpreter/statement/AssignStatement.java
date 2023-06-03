@@ -16,7 +16,7 @@ public class AssignStatement implements Statement {
 
     @Override
     public void run(ProgramState programState) {
-        Object expressionValue = expression.eval(programState);
-        programState.setVariable(variableName, (PyObject) expressionValue);
+        PyObject expressionValue = expression.eval(programState);
+        programState.setVariable(variableName, expressionValue);
     }
 }

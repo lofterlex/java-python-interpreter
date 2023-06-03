@@ -10,14 +10,14 @@ public class GTConditionExpression extends OpExpression{
     }
 
     @Override
-    public Object eval(ProgramState programState) {
-        Object lhs = this.lhs.eval(programState);
-        Object rhs = this.rhs.eval(programState);
+    public PyObject eval(ProgramState programState) {
+        PyObject lhs = this.lhs.eval(programState);
+        PyObject rhs = this.rhs.eval(programState);
         boolean res = false;
         if(lhs instanceof PyUnicode && rhs instanceof PyUnicode){
             res = ((PyUnicode) lhs).compare((PyUnicode) rhs) > 0;
         }else{
-            PyObject p= ((PyObject)lhs).sub((PyObject)rhs);
+            PyObject p= lhs.sub(rhs);
             if(p instanceof PyLong){
                 res = ((PyLong) p).asLong()>0;
             }

@@ -117,7 +117,7 @@ public class PyLong extends PyObject
             return new PyLong(this.num * ((PyBoolean) p).asInt());
         }
         if(p instanceof PyUnicode){
-            return new PyString(String.join("", Collections.nCopies((int) this.num, p.toString())));
+            return new PyUnicode(String.join("", Collections.nCopies((int) this.num, p.toString())).getBytes(),"utf-8");
         }
         else{
             super.mul(p);

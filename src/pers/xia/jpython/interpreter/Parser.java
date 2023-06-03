@@ -49,6 +49,7 @@ public class Parser {
 
         }
         if(expression instanceof BoolOp){
+            // TODO: 完成对BoolOp的解析
             BoolOp boolOp = ((BoolOp) expression);
             List<Expression> expressions = new ArrayList<>();
             for(exprType value: boolOp.values){
