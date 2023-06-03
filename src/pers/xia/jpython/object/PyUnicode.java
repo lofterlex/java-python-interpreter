@@ -31,7 +31,7 @@ public class PyUnicode extends PyObject
 
     public static PyUnicode internFromString(String str, boolean rawmode)
     {
-        return new PyUnicode(str, rawmode);
+        return new PyUnicode(str.substring(1,str.length()-1), rawmode);
     }
 
     private PyUnicode(String str, boolean rawmode)
