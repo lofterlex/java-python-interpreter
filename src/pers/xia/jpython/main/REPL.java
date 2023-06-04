@@ -3,15 +3,20 @@ package pers.xia.jpython.main;
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.grammar.GramInit;
 import pers.xia.jpython.interpreter.Interpreter;
+import pers.xia.jpython.interpreter.statement.Statement;
+import pers.xia.jpython.object.Py;
+import pers.xia.jpython.object.PyExceptions;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
 import pers.xia.jpython.parser.ParseToken;
+import pers.xia.jpython.parser.Parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 public class REPL {
@@ -60,6 +65,7 @@ public class REPL {
         // Replace this with the actual evaluation code
         PyReadMod mod = new PyReadMod(line);
         StringBuilder st = new StringBuilder();
+
         while (!mod.isEnd()){
             st.append(mod.format()).append("\n");
             System.out.print("...");
@@ -69,11 +75,11 @@ public class REPL {
         String formatStr = mod.format();
         st.append(formatStr).append("\n");
         byte[] bytes = st.toString().getBytes();
+
         Node node = ParseToken.parseBytes(bytes, GramInit.grammar, 1);
         Ast ast = new Ast();
         // get the modType
         Module module = (Module) ast.fromNode(node);
-//        Interpreter interpreter = new Interpreter(module.getBody());
         Interpreter interpreter = new Interpreter(module.getBody());
         interpreter.runProgram();
     }
@@ -103,7 +109,7 @@ public class REPL {
         static Map<Character,Character> mp = new HashMap<>();
         static {
             mp.put('{','}');mp.put('(',')');mp.put('[',']');
-            mp.put(':','\n');
+            mp.put(':','\0');
         }
         private String line;
         static Stack<Character> st = new Stack<>();
@@ -119,36 +125,41 @@ public class REPL {
                     sb.append(appendStr);
                     break;
                 }else if(isComment(c)){         //comment case
-                    String appendStr = ignoreComment(line);
+                    String appendStr = ignoreComment();
                     sb.append(appendStr);
                 }
-//                else if(isString(c)){          //string case
-//                    String appendStr = getFormatString(line);
-//                    sb.append(appendStr);
-//                }else if(isFloat(c)){           //float case
-//                    String appendStr = getFormatDouble(line);
-//                    sb.append(appendStr);
-//                }
-                else {
+                else if(isString(c)){          //string case
+                    String appendStr = getFormatString(c);
+                    sb.append(appendStr);
+                }else {
                     sb.append(readChar());
                 }
             }
             return sb.toString();
         }
 
-        private char peekChar(){
-            return line.charAt(0);
+        private Character peekChar(){
+            if(line.length()>0) return line.charAt(0);
+            return null;
         }
-        private char readChar(){
-            char c = line.charAt(0);
-            line = line.substring(1);
-            return c;
+        private Character readChar(){
+            if(line.length()>0){
+                char c = line.charAt(0);
+                line = line.substring(1);
+                return c;
+            }
+            return null;
         }
-        private String ignoreComment(String line){
+        private String ignoreComment(){
+            StringBuilder sb = new StringBuilder();
             // function to be implemented
-            return line;
+            while (peekChar()!=null){
+                sb.append(readChar());
+            }
+            return sb.toString();
         }
         private int getIndentationLevel(){
+            formatEscape();
             // function to be implemented;
             int res = 0;
             while (peekChar()==' '){
@@ -157,10 +168,27 @@ public class REPL {
             }
             return res;
         }
-        private String getFormatString(String line){
-            char[] chs = line.toCharArray();
+
+        private String getFormatString(Character ch){
+            StringBuilder sb = new StringBuilder();
+            sb.append(readChar());
             // function to be implemented;
-            return new String("");
+            Stack<Character> stack = new Stack<>();
+            stack.push(ch);
+            while (!stack.isEmpty()){
+                char c = readChar();
+                if(stack.peek()==c){
+                    stack.pop();
+                }else if(c=='\\'){
+                    if(peekChar()=='\"'){
+                        sb.append(c);
+                        sb.append(readChar());
+                        continue;
+                    }
+                }
+                sb.append(c);
+            }
+            return new String(sb);
         }
         private String getFormatDouble(String line){
             // function to be implemented;
@@ -177,11 +205,9 @@ public class REPL {
             return c == '#';
         }
         private boolean isString(Character c){
-            return c.equals('\"');
+            return c.equals('\"')||c.equals('\'');
         }
-        private boolean isFloat(Character c){
-            return c=='.';
-        }
+        private boolean isDouble(Character c){ return c.equals('.');}
         private boolean isEnd(){
             char[] chars = line.toCharArray();
             while (chars.length==0&&!st.isEmpty()){
@@ -199,6 +225,20 @@ public class REPL {
             }
             return st.isEmpty();
         }
+        private void formatEscape() {
+            line = line.replace("\t","    ");
+        }
+        public int getNumBeforeDot(String s){
+            char[] chars = s.toCharArray();
+            int res = 0;
+            for (int i = chars.length-1; i >= 0 ; i--) {
+                if(isNumber(chars[i])){
+                    res += res*10 + (chars[i]-'0');
+                }else {
+                    break;
+                }
+            }
+            return res;
+        }
     }
-
 }
