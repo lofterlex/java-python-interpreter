@@ -2,19 +2,16 @@ package pers.xia.jpython.main;
 
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.grammar.GramInit;
-import pers.xia.jpython.newinterpreter.Interpreter;
-import pers.xia.jpython.object.Py;
+import pers.xia.jpython.interpreter.Interpreter;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
 import pers.xia.jpython.parser.ParseToken;
-import pers.xia.jpython.parser.Parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 
 public class REPL {

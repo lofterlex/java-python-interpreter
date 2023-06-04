@@ -1,7 +1,6 @@
-package pers.xia.jpython.newinterpreter.expression;
+package pers.xia.jpython.interpreter.expression;
 
-import pers.xia.jpython.ast.cmpopType;
-import pers.xia.jpython.newinterpreter.ProgramState;
+import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.object.*;
 
 public class GTConditionExpression extends OpExpression{
@@ -11,14 +10,14 @@ public class GTConditionExpression extends OpExpression{
     }
 
     @Override
-    public Object accept(ProgramState programState, ExpVisitor v) {
-        Object lhs = this.lhs.accept(programState,v);
-        Object rhs = this.rhs.accept(programState, v);
+    public PyObject eval(ProgramState programState) {
+        PyObject lhs = this.lhs.eval(programState);
+        PyObject rhs = this.rhs.eval(programState);
         boolean res = false;
         if(lhs instanceof PyUnicode && rhs instanceof PyUnicode){
             res = ((PyUnicode) lhs).compare((PyUnicode) rhs) > 0;
         }else{
-            PyObject p= ((PyObject)lhs).sub((PyObject)rhs);
+            PyObject p= lhs.sub(rhs);
             if(p instanceof PyLong){
                 res = ((PyLong) p).asLong()>0;
             }

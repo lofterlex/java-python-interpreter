@@ -1,7 +1,6 @@
-package pers.xia.jpython.newinterpreter.expression;
+package pers.xia.jpython.interpreter.expression;
 
-import pers.xia.jpython.ast.boolopType;
-import pers.xia.jpython.newinterpreter.ProgramState;
+import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.object.*;
 
 public class EqualExpression extends OpExpression{
@@ -14,14 +13,14 @@ public class EqualExpression extends OpExpression{
     }
 
     @Override
-    public Object accept(ProgramState programState, ExpVisitor v) {
-        Object lhs = this.lhs.accept(programState,v);
-        Object rhs = this.rhs.accept(programState, v);
+    public PyObject eval(ProgramState programState) {
+        PyObject lhs = this.lhs.eval(programState);
+        PyObject rhs = this.rhs.eval(programState);
         boolean res;
         if(lhs instanceof PyUnicode && rhs instanceof PyUnicode){
             res = ((PyUnicode) lhs).compare((PyUnicode) rhs) != 0;
         }else{
-            res = ((PyObject)lhs).equals((PyObject)rhs);
+            res = lhs.equals(rhs);
         }
         return new PyBoolean(equal ? res : !res);
     }

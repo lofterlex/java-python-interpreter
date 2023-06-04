@@ -1,22 +1,18 @@
-package pers.xia.jpython.newinterpreter;
+package pers.xia.jpython.interpreter;
 
 import pers.xia.jpython.ast.Module;
 import pers.xia.jpython.ast.*;
 import pers.xia.jpython.grammar.GramInit;
-import pers.xia.jpython.newinterpreter.expression.ConstantExpression;
-import pers.xia.jpython.newinterpreter.expression.EvaluateVisitor;
-import pers.xia.jpython.newinterpreter.expression.ExpVisitor;
-import pers.xia.jpython.newinterpreter.expression.Expression;
-import pers.xia.jpython.newinterpreter.statement.*;
+import pers.xia.jpython.interpreter.expression.ConstantExpression;
+import pers.xia.jpython.interpreter.expression.Expression;
+import pers.xia.jpython.interpreter.statement.*;
 import pers.xia.jpython.object.PyExceptions;
 import pers.xia.jpython.object.PyLong;
-import pers.xia.jpython.object.PyString;
 import pers.xia.jpython.parser.Ast;
 import pers.xia.jpython.parser.Node;
 import pers.xia.jpython.parser.ParseToken;
 
 import java.io.File;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,15 +37,15 @@ public class Interpreter {
     }
     /** running the program */
     public void runProgram() {
-        ExpVisitor visitor = new EvaluateVisitor();
         for (Statement statement: statements) {
-            statement.run(programState, visitor);
+            statement.run(programState);
         }
     }
 
     private Statement parseAstNode(stmtType node){
         Parser parser = new Parser();
         if(node instanceof Assign){
+            // Todo: 实现连续赋值 比如a=b=1
             String variableName;
             exprType target = ((Assign) node).targets.get(0);
             variableName = parser.getNameVal((Name) target);
@@ -69,9 +65,16 @@ public class Interpreter {
             }
             Expression start = range.args.size() > 1 ? parser.parseExpression(range.args.get(0)) : new ConstantExpression(new PyLong(0));
             Expression end = range.args.size() > 1 ? parser.parseExpression(range.args.get(1)) : parser.parseExpression(range.args.get(0));
+            //Todo：从range中提取第3个参数
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType statement: forNode.body ){
                 body.add(parseAstNode(statement));
+            }
+            if(forNode.orelse != null) {
+                for(stmtType stmt: forNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
             }
             return new ForStatement(variableName,start,end,body);
         }
@@ -79,19 +82,32 @@ public class Interpreter {
             If ifNode = (If) node;
             Expression test = parser.parseExpression(ifNode.test);
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType stmt: ifNode.body){
                 body.add(this.parseAstNode(stmt));
             }
-            return new IfStatement(test,body);
+            if(ifNode.orelse != null) {
+                for(stmtType stmt: ifNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
+            }
+            return new IfStatement(test,body,elseBody);
         }
         if(node instanceof While){
             While whileNode = (While) node;
+            //Todo 实现对While的解析
             Expression test = parser.parseExpression(whileNode.test);
             List<Statement> body = new ArrayList<>();
+            List<Statement> elseBody = new ArrayList<>();
             for(stmtType stmt: whileNode.body){
                 body.add(this.parseAstNode(stmt));
             }
-            return new WhileStatement(test,body);
+            if(whileNode.orelse != null) {
+                for(stmtType stmt: whileNode.orelse){
+                    elseBody.add(this.parseAstNode(stmt));
+                }
+            }
+            return new WhileStatement(test,body,elseBody);
         }
         if (node instanceof Expr){
             exprType target = ((Expr) node).value;
@@ -117,6 +133,12 @@ public class Interpreter {
             Expression expression = parser.parseExpression(returnNode.value);
             return new ReturnStatement(expression);
         }
+        if (node instanceof Continue){
+            return new ContinueStatement();
+        }
+        if (node instanceof Break){
+            return new BreakStatement();
+        }
         return  new EmpytStatement();
     }
 
@@ -127,7 +149,6 @@ public class Interpreter {
         {
             Node node = ParseToken.parseFile(file, GramInit.grammar, 1);
             Ast ast = new Ast();
-            // get the modType
             Module mod = (Module) ast.fromNode(node);
             Interpreter interpreter = new Interpreter(mod.getBody());
             interpreter.runProgram();

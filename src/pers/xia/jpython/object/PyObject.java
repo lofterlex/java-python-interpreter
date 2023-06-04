@@ -1,6 +1,5 @@
 package pers.xia.jpython.object;
 
-import pers.xia.jpython.interpreter.expression.DoubleConstantExpression;
 
 public abstract class PyObject
 {
@@ -13,7 +12,7 @@ public abstract class PyObject
             return new PyFloat((double) obj);
         }
         if(obj instanceof String){
-            return new PyString((String) obj);
+            return new PyUnicode( ((String) obj).getBytes(), "utf-8");
         }
         return new PyNone();
     }
@@ -32,6 +31,10 @@ public abstract class PyObject
 
     public PyObject mul(PyObject p){
         throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "TypeError: unsupported operand type(s) for " + this.getType()+" and "+p.getType());
+    }
+
+    public PyObject uSub(){
+        throw new PyExceptions(PyExceptions.ErrorType.TYPE_ERROR, "TypeError: unsupported operand type(s) for " + this.getType());
     }
 
     public boolean equals(PyObject p){

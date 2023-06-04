@@ -1,4 +1,4 @@
-package pers.xia.jpython.newinterpreter;
+package pers.xia.jpython.interpreter;
 
 import pers.xia.jpython.object.PyObject;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class FunctionState extends ProgramState {
     private HashMap<String, PyObject> variableHeap;
-    private Object returnVal;
+    private PyObject returnVal;
 
     public FunctionState() {
         this.variableHeap = new HashMap<>();
@@ -21,14 +21,14 @@ public class FunctionState extends ProgramState {
         }
         return true;
     }
-    public Object getReturnValue() {
+    public PyObject getReturnValue() {
         if(hasReturnValue() != true){
 //            System.out.println("Does not have specified return value");
         }
         //return setReturnValue(); //was not able to figure it out
         return returnVal;
     }
-    public void setReturnValue(Object returnValue) {
+    public void setReturnValue(PyObject returnValue) {
         this.returnVal =returnValue;
     }
     public PyObject getVariable(String variable) {

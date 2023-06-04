@@ -1,6 +1,6 @@
-package pers.xia.jpython.newinterpreter.expression;
+package pers.xia.jpython.interpreter.expression;
 
-import pers.xia.jpython.newinterpreter.ProgramState;
+import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.object.PyObject;
 
 public abstract class Expression {
@@ -9,5 +9,5 @@ public abstract class Expression {
         this.val = val;
     }
     public Expression(){}
-    public abstract Object accept(ProgramState programState, ExpVisitor v);
+    public abstract PyObject eval(ProgramState programState);
 }

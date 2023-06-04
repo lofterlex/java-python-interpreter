@@ -1,11 +1,10 @@
 # test assign
-n = 4
-for i in range(n,10):
-    print(i)
-print(1 + 1.5)
-print(True + 2)
-print('123'+8)
-print("hello")
-print('hello')
+def a(p):
+    if p > 1:
+        return p*a(p-1)
+    else:
+        return 1
+print(a(5))
 # test binop
-y = 1 + 2
+y = (not 1) + 2
+print(y)

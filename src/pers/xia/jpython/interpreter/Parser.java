@@ -1,10 +1,10 @@
-package pers.xia.jpython.newinterpreter;
+package pers.xia.jpython.interpreter;
 
 import pers.xia.jpython.ast.*;
-import pers.xia.jpython.newinterpreter.expression.*;
-import pers.xia.jpython.newinterpreter.expression.Expression;
-import pers.xia.jpython.newinterpreter.statement.AssignStatement;
-import pers.xia.jpython.newinterpreter.statement.Statement;
+import pers.xia.jpython.interpreter.expression.*;
+import pers.xia.jpython.interpreter.expression.Expression;
+import pers.xia.jpython.interpreter.statement.AssignStatement;
+import pers.xia.jpython.interpreter.statement.Statement;
 import pers.xia.jpython.object.*;
 
 import java.util.ArrayList;
@@ -49,6 +49,7 @@ public class Parser {
 
         }
         if(expression instanceof BoolOp){
+            // TODO: 完成对BoolOp的解析
             BoolOp boolOp = ((BoolOp) expression);
             List<Expression> expressions = new ArrayList<>();
             for(exprType value: boolOp.values){
@@ -81,6 +82,10 @@ public class Parser {
         if(expression instanceof NameConstant){
             NameConstant n = (NameConstant) expression;
             return new ConstantExpression(n.value);
+        }
+        if(expression instanceof UnaryOp){
+            UnaryOp unaryOp = (UnaryOp) expression;
+            return new UnaryExpression(parseExpression(unaryOp.operand),unaryOp.op);
         }
         return new ConstantExpression(new PyLong(123));
     }

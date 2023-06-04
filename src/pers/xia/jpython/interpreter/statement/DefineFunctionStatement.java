@@ -1,7 +1,6 @@
-package pers.xia.jpython.newinterpreter.statement;
+package pers.xia.jpython.interpreter.statement;
 
-import pers.xia.jpython.newinterpreter.ProgramState;
-import pers.xia.jpython.newinterpreter.expression.ExpVisitor;
+import pers.xia.jpython.interpreter.ProgramState;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class DefineFunctionStatement implements Statement {
     }
 
     @Override
-    public void run(ProgramState programState, ExpVisitor expVisitor) {
+    public void run(ProgramState programState) {
         programState.registerFunction(functionName, parameterNames, functionStatements);
     }
 

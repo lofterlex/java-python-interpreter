@@ -89,6 +89,11 @@ public class PyFloat extends PyObject
     }
 
     @Override
+    public PyObject uSub() {
+        return new PyFloat(-this.num);
+    }
+
+    @Override
     public String getType(){
         return "num";
     }

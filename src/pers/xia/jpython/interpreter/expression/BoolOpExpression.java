@@ -1,8 +1,7 @@
-package pers.xia.jpython.newinterpreter.expression;
+package pers.xia.jpython.interpreter.expression;
 
 import pers.xia.jpython.ast.boolopType;
-import pers.xia.jpython.ast.exprType;
-import pers.xia.jpython.newinterpreter.ProgramState;
+import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.object.PyBoolean;
 import pers.xia.jpython.object.PyObject;
 
@@ -16,10 +15,11 @@ public class BoolOpExpression extends Expression{
         this.type = type;
     }
     @Override
-    public Object accept(ProgramState programState, ExpVisitor v) {
-        boolean tempRes = this.type==boolopType.And ? true : false;
+    public PyObject eval(ProgramState programState) {
+        // TODO 补充代码返回逻辑运算结果
+        boolean tempRes = this.type == boolopType.And;
         for(Expression expression: values){
-            boolean boo = ((PyObject)expression.accept(programState, v)).asBoolean();
+            boolean boo = (expression.eval(programState)).asBoolean();
             tempRes = this.type==boolopType.And ? (tempRes && boo) : (tempRes || boo);
             if(this.type == boolopType.And && !tempRes){return new PyBoolean(false);}
             if(this.type == boolopType.Or && tempRes){return new PyBoolean(true);}

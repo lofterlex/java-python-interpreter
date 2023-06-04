@@ -1,7 +1,6 @@
-package pers.xia.jpython.newinterpreter.statement;
+package pers.xia.jpython.interpreter.statement;
 
-import pers.xia.jpython.newinterpreter.ProgramState;
-import pers.xia.jpython.newinterpreter.expression.ExpVisitor;
+import pers.xia.jpython.interpreter.ProgramState;
 import pers.xia.jpython.object.PyObject;
 
 public class PrintStatement implements Statement {
@@ -10,7 +9,7 @@ public class PrintStatement implements Statement {
     //the varName in VariableHeap.
     private static final String varName = "arg";
     @Override
-    public void run(ProgramState programState, ExpVisitor expVisitor) {
+    public void run(ProgramState programState) {
         PyObject variable = programState.getVariable(varName);
         printPy(variable);
     }

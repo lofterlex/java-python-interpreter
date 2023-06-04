@@ -1,6 +1,4 @@
-package pers.xia.jpython.newinterpreter.expression;
-
-import pers.xia.jpython.ast.OperatorType;
+package pers.xia.jpython.interpreter.expression;
 
 public abstract class OpExpression extends Expression{
     protected Expression lhs;
