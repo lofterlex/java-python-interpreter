@@ -77,9 +77,19 @@ public class PyUnicode extends PyObject
 
     @Override
     public String toString() {
+        replaceEscapes();
         return str;
     }
 
+    public void replaceEscapes() {
+        str = str.replace("\\n", "\n");
+        str = str.replace("\\t", "\t");
+        str = str.replace("\\r", "\r");
+        str = str.replace("\\b", "\b");
+        str = str.replace("\\\"", "\"");
+        str = str.replace("\\'", "'");
+        str = str.replace("\\\\", "\\");
+    }
     public int compare(PyUnicode str){
         return 0 - this.str.compareTo(str.str);
     }
