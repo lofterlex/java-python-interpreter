@@ -36,10 +36,6 @@ public abstract class BlockStatement implements Statement{
 
     public void whileLoop(ProgramState programState) {
         // TODO: 完成whileLoop实现while循环
-        while((expression.eval(programState)).asBoolean()) {
-            if(bodyBlock(programState)){return;}
-        }
-        elseBlock(programState);
     }
 
     // 返回值为true则表示该block有需要向外传递的break
