@@ -162,33 +162,17 @@ public class REPL {
             formatEscape();
             // function to be implemented;
             int res = 0;
-            while (peekChar()==' '){
-                readChar();
-                res++;
-            }
             return res;
         }
 
         private String getFormatString(Character ch){
             StringBuilder sb = new StringBuilder();
             sb.append(readChar());
-            // function to be implemented;
-            Stack<Character> stack = new Stack<>();
-            stack.push(ch);
-            while (!stack.isEmpty()){
-                char c = readChar();
-                if(stack.peek()==c){
-                    stack.pop();
-                }else if(c=='\\'){
-                    if(peekChar()=='\"'){
-                        sb.append(c);
-                        sb.append(readChar());
-                        continue;
-                    }
-                }
-                sb.append(c);
-            }
-            return new String(sb);
+            /* sb is a StringBuilder Class, you can use append() to add a char and toString() to
+                convert it to a string class.
+            */
+            // function to be implemented, and delete the exception clause;
+            throw new RuntimeException("please implement the getFormatString function");
         }
         private String getFormatDouble(String line){
             // function to be implemented;
