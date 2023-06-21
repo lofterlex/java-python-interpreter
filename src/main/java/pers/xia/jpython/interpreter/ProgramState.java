@@ -23,7 +23,6 @@ public class ProgramState {
         statementList = new HashMap<>();
         pyExceptions = new PyExceptions();
     }
-        // TODO: Implement. Initialize any instance variables you added.
         /** Returns the integer value associated with the specified variable name in the current call frame. */
         public PyObject getVariable(String variable) {
             HashMap<String, PyObject> topCallFrame = variableHeap;

@@ -8,6 +8,5 @@ public class PyNumber extends PyObject
     
     public PyNumber(String s)
     {
-        // TODO
     }
 }

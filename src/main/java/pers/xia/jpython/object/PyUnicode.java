@@ -17,7 +17,6 @@ public class PyUnicode extends PyObject
         }
         catch (UnsupportedEncodingException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             throw new PyExceptions(ErrorType.SYSTEM_ERROR,
                     "Can't convert bytes to str implicitly");
@@ -39,7 +38,6 @@ public class PyUnicode extends PyObject
         this.str = str;
         if(!rawmode)
         {
-            // FIXME should use faster and more complete method
             this.str.replace("\\n", "\n");
             this.str.replace("\\t", "\t");
             this.str.replace("\\\\", "\\");
@@ -48,7 +46,6 @@ public class PyUnicode extends PyObject
 
     private PyUnicode(PyObject obj)
     {
-        // TODO
     }
 
     public static PyUnicode concat(PyObject left, PyObject right)

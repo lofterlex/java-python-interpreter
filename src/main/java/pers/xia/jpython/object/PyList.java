@@ -19,7 +19,6 @@ public class PyList extends PySequence
 
 	public boolean append(PyObject newitem) 
 	{
-		// TODO Auto-generated method stub
 	    list.add(newitem);
 		return true;
 	}
@@ -36,7 +35,6 @@ public class PyList extends PySequence
 
 	public int getSize() 
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
@@ -68,7 +66,6 @@ public class PyList extends PySequence
 
 	public PyObject getItem(int l) 
 	{
-		// TODO Auto-generated method stub
 		return list.get(l);
 	}
 }

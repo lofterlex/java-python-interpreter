@@ -13,7 +13,6 @@ public class PyLong extends PyObject
 
     public static PyObject newLong(String str)
     {
-        // TODO check the str is too much longer
         if (str.length() <= 1)
         {
             return new PyLong(Long.parseLong((str)));

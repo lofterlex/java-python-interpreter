@@ -96,18 +96,7 @@ public class Interpreter {
         if(node instanceof While){
             While whileNode = (While) node;
             //Todo 实现对While的解析
-            Expression test = parser.parseExpression(whileNode.test);
-            List<Statement> body = new ArrayList<>();
-            List<Statement> elseBody = new ArrayList<>();
-            for(stmtType stmt: whileNode.body){
-                body.add(this.parseAstNode(stmt));
-            }
-            if(whileNode.orelse != null) {
-                for(stmtType stmt: whileNode.orelse){
-                    elseBody.add(this.parseAstNode(stmt));
-                }
-            }
-            return new WhileStatement(test,body,elseBody);
+            // return new WhileStatement(test,body,elseBody);
         }
         if (node instanceof Expr){
             exprType target = ((Expr) node).value;
